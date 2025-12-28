@@ -1,0 +1,132 @@
+{;; =============================================================================
+ ;; ARCNet Protocol Configuration
+ ;; =============================================================================
+ ;;
+ ;; This configuration uses Aero for environment-specific profiles.
+ ;; ALL secrets are loaded from environment variables - NEVER hardcode secrets.
+ ;;
+ ;; Required environment variables:
+ ;; - ARCNET_ENV: Environment (dev/staging/prod)
+ ;; - ARCNET_NODE_ID: This node's identifier
+ ;; - ARCNET_GEOZONE_ID: This node's geozone (e.g., geozone-west)
+ ;; - ARCNET_KAFKA_BOOTSTRAP_SERVERS: Kafka broker addresses
+ ;; - ARCNET_KAFKA_USERNAME: SASL username
+ ;; - ARCNET_KAFKA_PASSWORD: SASL password (min 8 chars)
+ ;; - ARCNET_KEYSTORE_PATH: Path to PKCS12 keystore
+ ;; - ARCNET_KEYSTORE_PASSWORD: Keystore password
+ ;; - ARCNET_TRUSTSTORE_PATH: Path to PKCS12 truststore
+ ;; - ARCNET_TRUSTSTORE_PASSWORD: Truststore password
+ ;; =============================================================================
+
+ :env #profile {:dev :dev
+                :staging :staging
+                :prod :prod}
+
+ ;; ---------------------------------------------------------------------------
+ ;; Node Identity
+ ;; ---------------------------------------------------------------------------
+ :node-identity
+ {:node-id #env-required ARCNET_NODE_ID
+  :geozone-id #env-required ARCNET_GEOZONE_ID}
+
+ ;; ---------------------------------------------------------------------------
+ ;; Kafka Configuration
+ ;; ---------------------------------------------------------------------------
+ :kafka-config
+ {:bootstrap-servers #env-required ARCNET_KAFKA_BOOTSTRAP_SERVERS
+
+  ;; Client identification
+  :client-id #or [#env ARCNET_KAFKA_CLIENT_ID
+                  #join [#env-required ARCNET_GEOZONE_ID
+                         "-"
+                         #env-required ARCNET_NODE_ID]]
+
+  :group-id #or [#env ARCNET_KAFKA_GROUP_ID
+                 #join ["arcnet-" #env-required ARCNET_GEOZONE_ID]]
+
+  ;; Producer settings (environment-specific)
+  :acks #profile {:dev "1"
+                  :staging "all"
+                  :prod "all"}
+
+  :retries #profile {:dev 1
+                     :staging 3
+                     :prod 5}}
+
+ ;; ---------------------------------------------------------------------------
+ ;; TLS Configuration
+ ;; ---------------------------------------------------------------------------
+ :tls-config
+ {:keystore-path #env-required ARCNET_KEYSTORE_PATH
+  :keystore-password #env-secret ARCNET_KEYSTORE_PASSWORD
+  :truststore-path #env-required ARCNET_TRUSTSTORE_PATH
+  :truststore-password #env-secret ARCNET_TRUSTSTORE_PASSWORD}
+
+ ;; ---------------------------------------------------------------------------
+ ;; SASL Authentication
+ ;; ---------------------------------------------------------------------------
+ :sasl-config
+ {:username #env-required ARCNET_KAFKA_USERNAME
+  :password #env-secret ARCNET_KAFKA_PASSWORD}
+
+ ;; ---------------------------------------------------------------------------
+ ;; Certificate Configuration (for PKI management)
+ ;; ---------------------------------------------------------------------------
+ :cert-config
+ #profile
+ {:dev
+  {:validity-days 30
+   :key-size 2048}
+
+  :staging
+  {:validity-days 90
+   :key-size 4096}
+
+  :prod
+  {:validity-days 365
+   :key-size 4096
+   ;; Production uses external CA paths
+   :root-ca-path #env ARCNET_ROOT_CA_PATH
+   :geozone-ca-path #env ARCNET_GEOZONE_CA_PATH
+   :node-cert-path #env ARCNET_NODE_CERT_PATH
+   :node-key-path #env ARCNET_NODE_KEY_PATH}}
+
+ ;; ---------------------------------------------------------------------------
+ ;; Observability Configuration
+ ;; ---------------------------------------------------------------------------
+ :observability
+ #profile
+ {:dev
+  {:metrics-port 9090
+   :tracing-enabled false}
+
+  :staging
+  {:metrics-port 9090
+   :tracing-enabled true
+   :otlp-endpoint "http://jaeger:4317"}
+
+  :prod
+  {:metrics-port 9090
+   :tracing-enabled true
+   :otlp-endpoint #env-required ARCNET_OTLP_ENDPOINT}}
+
+ ;; ---------------------------------------------------------------------------
+ ;; Security Settings (environment-specific)
+ ;; ---------------------------------------------------------------------------
+ :security
+ #profile
+ {:dev
+  {:tls-verify-hostname false
+   :min-tls-version "TLSv1.2"
+   :cert-expiry-warn-days 7}
+
+  :staging
+  {:tls-verify-hostname true
+   :min-tls-version "TLSv1.3"
+   :cert-expiry-warn-days 14}
+
+  :prod
+  {:tls-verify-hostname true
+   :min-tls-version "TLSv1.3"
+   :cert-expiry-warn-days 30
+   :require-client-cert true}}}

@@ -1,0 +1,33 @@
+# Clojure
+.cpcache/
+.nrepl-port
+target/
+*.jar
+*.class
+
+# Environment and secrets - NEVER commit these
+.env
+.env.*
+*.p12
+*.jks
+*.pem
+*.key
+secrets/
+credentials/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.calva/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test output
+test-output/

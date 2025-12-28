@@ -1,0 +1,214 @@
+/**
+ * ConsoleLayout - Mission control grid layout
+ *
+ * Grid structure:
+ * +------------------------------------------+
+ * |                 HEADER                   |
+ * +----------------------------+-------------+
+ * |                            |   SIDEBAR   |
+ * |          GLOBE             |  (Resource  |
+ * |        (deck.gl)           |   Panel +   |
+ * |                            | NodeDetail) |
+ * +----------------------------+-------------+
+ * |               EVENT LOG                  |
+ * +------------------------------------------+
+ * |              COMMAND LINE                |
+ * +------------------------------------------+
+ */
+
+.layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  grid-template-columns: 1fr 380px;
+  grid-template-areas:
+    "header header"
+    "globe sidebar"
+    "events events"
+    "command command";
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--bg-terminal);
+  position: relative;
+}
+
+/* CRT curve effect on the entire layout */
+.crtCurve {
+  border-radius: 20px;
+  box-shadow:
+    inset 0 0 100px rgba(0, 255, 65, 0.05),
+    0 0 20px rgba(0, 255, 65, 0.1);
+}
+
+/* Header area */
+.header {
+  grid-area: header;
+  z-index: var(--z-header);
+}
+
+/* Main globe visualization */
+.globe {
+  grid-area: globe;
+  position: relative;
+  overflow: hidden;
+  min-height: 0; /* Allow flex shrinking */
+}
+
+/* Right sidebar */
+.sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border-green-dim);
+  border-left: 1px solid var(--border-green);
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+/* Scrollbar styling for sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: var(--bg-terminal-darker);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--terminal-green-dim);
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--terminal-green);
+}
+
+.sidebarPanel {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--bg-panel);
+}
+
+/* Event log area */
+.events {
+  grid-area: events;
+  height: 180px;
+  border-top: 1px solid var(--border-green);
+  min-height: 0;
+}
+
+/* Command line area */
+.command {
+  grid-area: command;
+  border-top: 1px solid var(--border-green);
+}
+
+/* Placeholder styling for development */
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--bg-panel);
+  position: relative;
+}
+
+.placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 50%, rgba(0, 255, 65, 0.02) 50%),
+    linear-gradient(0deg, transparent 50%, rgba(0, 255, 65, 0.02) 50%);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+
+.placeholderLabel {
+  background: var(--bg-terminal);
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--border-green-dim);
+  z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .layout {
+    grid-template-columns: 1fr 320px;
+  }
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-rows: auto 1fr auto auto auto;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "globe"
+      "sidebar"
+      "events"
+      "command";
+  }
+
+  .sidebar {
+    border-left: none;
+    border-top: 1px solid var(--border-green);
+    max-height: 300px;
+  }
+
+  .events {
+    height: 150px;
+  }
+}
+
+/* Connection status indicator */
+.connectionStatus {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  z-index: var(--z-overlay);
+}
+
+/* Loading overlay */
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-terminal);
+  z-index: var(--z-modal);
+}
+
+.loadingText {
+  color: var(--terminal-green);
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    text-shadow: 0 0 5px var(--terminal-green-glow);
+  }
+  50% {
+    text-shadow: 0 0 20px var(--terminal-green-glow), 0 0 30px var(--terminal-green-glow);
+  }
+}
+
+/* Keyboard focus indicator for accessibility */
+.layout:focus-within .focusIndicator {
+  outline: 2px solid var(--terminal-green);
+  outline-offset: -2px;
+}

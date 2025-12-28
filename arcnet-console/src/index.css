@@ -1,0 +1,730 @@
+/**
+ * ARCNet Console - Terminal-styled Global Styles
+ *
+ * Design Philosophy: Mission control terminal aesthetic
+ * - Green phosphor CRT displays meet modern WebGL
+ * - Monospace typography throughout
+ * - Keyboard-first interaction
+ */
+
+/* =============================================================================
+   Google Fonts Import
+   ============================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+/* =============================================================================
+   CSS Variables - Terminal Color System
+   ============================================================================= */
+
+:root {
+  /* Terminal greens - Primary palette */
+  --terminal-green: #00ff41;
+  --terminal-green-dim: #00aa2a;
+  --terminal-green-bright: #33ff66;
+  --terminal-green-glow: rgba(0, 255, 65, 0.4);
+  --terminal-green-subtle: rgba(0, 255, 65, 0.1);
+
+  /* Cyan accents - Secondary palette (Protoss-inspired) */
+  --accent-cyan: #00d4ff;
+  --accent-cyan-dim: #0099bb;
+  --accent-cyan-bright: #33e0ff;
+  --accent-cyan-glow: rgba(0, 212, 255, 0.4);
+
+  /* Status colors - Energy sources */
+  --status-cogen: #4488ff;
+  --status-cogen-glow: rgba(68, 136, 255, 0.4);
+  --status-grid: #ff8800;
+  --status-grid-glow: rgba(255, 136, 0, 0.4);
+  --status-battery: #00ff88;
+  --status-battery-glow: rgba(0, 255, 136, 0.4);
+
+  /* Status colors - States */
+  --status-offline: #ff3366;
+  --status-offline-glow: rgba(255, 51, 102, 0.4);
+  --status-warning: #ffaa00;
+  --status-warning-glow: rgba(255, 170, 0, 0.4);
+  --status-success: #00ff41;
+  --status-error: #ff3366;
+
+  /* HPC-specific colors */
+  --status-hpc: #aa44ff;
+  --status-hpc-glow: rgba(170, 68, 255, 0.4);
+  --status-hpc-dim: #7733cc;
+
+  /* Background colors */
+  --bg-terminal: #0a0f0a;
+  --bg-terminal-darker: #050805;
+  --bg-panel: rgba(0, 20, 10, 0.95);
+  --bg-panel-solid: #001408;
+  --bg-input: rgba(0, 40, 20, 0.8);
+  --bg-input-focus: rgba(0, 60, 30, 0.9);
+  --bg-hover: rgba(0, 255, 65, 0.05);
+  --bg-active: rgba(0, 255, 65, 0.1);
+
+  /* Text colors */
+  --text-primary: #00ff41;
+  --text-secondary: #00aa2a;
+  --text-muted: #005522;
+  --text-dim: #003311;
+  --text-white: #e0ffe0;
+  --text-error: #ff6688;
+  --text-warning: #ffcc00;
+
+  /* Border colors */
+  --border-green: rgba(0, 255, 65, 0.3);
+  --border-green-dim: rgba(0, 255, 65, 0.15);
+  --border-active: rgba(0, 255, 65, 0.8);
+  --border-focus: var(--terminal-green);
+
+  /* Shadow colors */
+  --shadow-green: 0 0 20px rgba(0, 255, 65, 0.1);
+  --shadow-green-strong: 0 0 40px rgba(0, 255, 65, 0.2);
+  --shadow-inset: inset 0 0 60px rgba(0, 255, 65, 0.03);
+
+  /* Typography */
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  --font-display: 'Share Tech Mono', 'VT323', monospace;
+
+  /* Terminal text sizes */
+  --text-xs: 0.7rem;    /* 11px - timestamps, secondary */
+  --text-sm: 0.8rem;    /* 13px - body text */
+  --text-md: 0.9rem;    /* 14px - primary text */
+  --text-lg: 1.1rem;    /* 18px - headers */
+  --text-xl: 1.4rem;    /* 22px - major headers */
+  --text-2xl: 1.8rem;   /* 29px - display headers */
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Border radius - minimal for terminal aesthetic */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* Transitions */
+  --transition-fast: 100ms ease-out;
+  --transition-normal: 200ms ease-out;
+  --transition-slow: 400ms ease-out;
+
+  /* Z-index layers */
+  --z-base: 0;
+  --z-panel: 10;
+  --z-header: 20;
+  --z-overlay: 30;
+  --z-modal: 40;
+  --z-scanlines: 100;
+}
+
+/* =============================================================================
+   Reset and Base Styles
+   ============================================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-terminal);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* =============================================================================
+   Typography
+   ============================================================================= */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+h1 {
+  font-size: var(--text-2xl);
+}
+
+h2 {
+  font-size: var(--text-xl);
+}
+
+h3 {
+  font-size: var(--text-lg);
+}
+
+p {
+  margin-bottom: var(--space-md);
+}
+
+a {
+  color: var(--accent-cyan);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--accent-cyan-bright);
+  text-shadow: 0 0 10px var(--accent-cyan-glow);
+}
+
+code, pre, kbd {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+pre {
+  background: var(--bg-input);
+  padding: var(--space-md);
+  border: 1px solid var(--border-green-dim);
+  overflow-x: auto;
+}
+
+/* =============================================================================
+   Selection
+   ============================================================================= */
+
+::selection {
+  background: var(--terminal-green);
+  color: var(--bg-terminal);
+}
+
+::-moz-selection {
+  background: var(--terminal-green);
+  color: var(--bg-terminal);
+}
+
+/* =============================================================================
+   Scrollbar Styling
+   ============================================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-terminal-darker);
+  border-left: 1px solid var(--border-green-dim);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--terminal-green-dim);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--terminal-green);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--terminal-green-dim) var(--bg-terminal-darker);
+}
+
+/* =============================================================================
+   Form Elements
+   ============================================================================= */
+
+input,
+textarea,
+select {
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border: 1px solid var(--border-green);
+  padding: var(--space-sm) var(--space-md);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--border-active);
+  box-shadow: 0 0 10px var(--terminal-green-glow);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+}
+
+button {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border: 1px solid var(--border-green);
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all var(--transition-fast);
+}
+
+button:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-active);
+  text-shadow: 0 0 10px var(--terminal-green-glow);
+}
+
+button:active {
+  background: var(--bg-active);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   CRT Effects - Scan Lines Overlay
+   ============================================================================= */
+
+.scanlines::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: var(--z-scanlines);
+}
+
+/* Optional: Subtle screen flicker animation */
+.scanlines::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 255, 65, 0.02);
+  pointer-events: none;
+  z-index: var(--z-scanlines);
+  animation: flicker 0.15s infinite;
+  opacity: 0;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* =============================================================================
+   CRT Screen Curvature Effect
+   ============================================================================= */
+
+.crt-curve {
+  border-radius: 20px;
+  box-shadow:
+    inset 0 0 100px rgba(0, 255, 65, 0.05),
+    0 0 20px rgba(0, 255, 65, 0.1);
+}
+
+/* =============================================================================
+   Text Glow Effects
+   ============================================================================= */
+
+.glow-text {
+  text-shadow: 0 0 10px var(--terminal-green-glow);
+}
+
+.glow-text-strong {
+  text-shadow:
+    0 0 5px var(--terminal-green),
+    0 0 10px var(--terminal-green-glow),
+    0 0 20px var(--terminal-green-glow),
+    0 0 40px var(--terminal-green-glow);
+}
+
+.glow-text-ultra {
+  text-shadow:
+    0 0 2px var(--terminal-green),
+    0 0 5px var(--terminal-green),
+    0 0 15px var(--terminal-green-glow),
+    0 0 30px var(--terminal-green-glow),
+    0 0 60px var(--terminal-green-glow);
+  animation: textGlowPulse 3s ease-in-out infinite;
+}
+
+@keyframes textGlowPulse {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.1);
+  }
+}
+
+.glow-cyan {
+  text-shadow: 0 0 10px var(--accent-cyan-glow);
+}
+
+.glow-cyan-strong {
+  text-shadow:
+    0 0 5px var(--accent-cyan),
+    0 0 10px var(--accent-cyan-glow),
+    0 0 20px var(--accent-cyan-glow),
+    0 0 40px var(--accent-cyan-glow);
+}
+
+.glow-warning {
+  text-shadow: 0 0 10px var(--status-warning-glow);
+}
+
+.glow-error {
+  text-shadow: 0 0 10px var(--status-offline-glow);
+}
+
+.glow-hpc {
+  text-shadow: 0 0 10px var(--status-hpc-glow);
+}
+
+.glow-cogen {
+  text-shadow: 0 0 10px var(--status-cogen-glow);
+}
+
+/* =============================================================================
+   Panel Base Styles
+   ============================================================================= */
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-green);
+  box-shadow: var(--shadow-green);
+}
+
+.panel-glow {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-green);
+  box-shadow:
+    0 0 10px rgba(0, 255, 65, 0.1),
+    0 0 20px rgba(0, 255, 65, 0.05),
+    inset 0 0 30px rgba(0, 255, 65, 0.02);
+  transition: box-shadow var(--transition-normal);
+}
+
+.panel-glow:hover {
+  box-shadow:
+    0 0 15px rgba(0, 255, 65, 0.15),
+    0 0 30px rgba(0, 255, 65, 0.08),
+    inset 0 0 30px rgba(0, 255, 65, 0.03);
+}
+
+.panel-glow-cyan {
+  border-color: rgba(0, 212, 255, 0.3);
+  box-shadow:
+    0 0 10px rgba(0, 212, 255, 0.1),
+    0 0 20px rgba(0, 212, 255, 0.05),
+    inset 0 0 30px rgba(0, 212, 255, 0.02);
+}
+
+.panel-header {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--border-green-dim);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-secondary);
+}
+
+.panel-content {
+  padding: var(--space-md);
+}
+
+/* =============================================================================
+   Status Indicators
+   ============================================================================= */
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: var(--space-sm);
+}
+
+.status-dot--online {
+  background: var(--terminal-green);
+  box-shadow: 0 0 8px var(--terminal-green-glow);
+}
+
+.status-dot--offline {
+  background: var(--status-offline);
+  box-shadow: 0 0 8px var(--status-offline-glow);
+}
+
+.status-dot--warning {
+  background: var(--status-warning);
+  box-shadow: 0 0 8px var(--status-warning-glow);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.status-dot--cogen {
+  background: var(--status-cogen);
+  box-shadow: 0 0 8px var(--status-cogen-glow);
+}
+
+.status-dot--grid {
+  background: var(--status-grid);
+  box-shadow: 0 0 8px var(--status-grid-glow);
+}
+
+.status-dot--battery {
+  background: var(--status-battery);
+  box-shadow: 0 0 8px var(--status-battery-glow);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* =============================================================================
+   ASCII Progress Bar Styles
+   ============================================================================= */
+
+.progress-bar {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.progress-bar--low {
+  color: var(--status-offline);
+}
+
+.progress-bar--medium {
+  color: var(--status-warning);
+}
+
+.progress-bar--high {
+  color: var(--terminal-green);
+}
+
+/* =============================================================================
+   Utility Classes
+   ============================================================================= */
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-warning { color: var(--status-warning); }
+.text-error { color: var(--status-error); }
+.text-success { color: var(--status-success); }
+.text-cyan { color: var(--accent-cyan); }
+.text-hpc { color: var(--status-hpc); }
+.text-cogen { color: var(--status-cogen); }
+.text-grid { color: var(--status-grid); }
+.text-battery { color: var(--status-battery); }
+
+.text-xs { font-size: var(--text-xs); }
+.text-sm { font-size: var(--text-sm); }
+.text-md { font-size: var(--text-md); }
+.text-lg { font-size: var(--text-lg); }
+.text-xl { font-size: var(--text-xl); }
+
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+
+.font-light { font-weight: 300; }
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-bold { font-weight: 600; }
+
+.tracking-wide { letter-spacing: 0.05em; }
+.tracking-wider { letter-spacing: 0.1em; }
+.tracking-widest { letter-spacing: 0.15em; }
+
+/* =============================================================================
+   MapLibre GL Overrides (for deck.gl base map)
+   ============================================================================= */
+
+.maplibregl-canvas {
+  outline: none;
+}
+
+.maplibregl-ctrl-logo,
+.maplibregl-ctrl-attrib {
+  display: none !important;
+}
+
+/* =============================================================================
+   Animations
+   ============================================================================= */
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    text-shadow: 0 0 5px var(--terminal-green-glow);
+  }
+  50% {
+    text-shadow: 0 0 20px var(--terminal-green-glow), 0 0 30px var(--terminal-green-glow);
+  }
+}
+
+/* Staggered fade-in animation for panels */
+@keyframes staggeredFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bootSequence {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes scanIn {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes cursorBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-normal);
+}
+
+.animate-slide-up {
+  animation: slideUp var(--transition-normal);
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.animate-boot {
+  animation: bootSequence 0.6s ease-out forwards;
+}
+
+.animate-boot-delay-1 {
+  animation: bootSequence 0.6s ease-out 0.1s forwards;
+  opacity: 0;
+}
+
+.animate-boot-delay-2 {
+  animation: bootSequence 0.6s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.animate-boot-delay-3 {
+  animation: bootSequence 0.6s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+.animate-boot-delay-4 {
+  animation: bootSequence 0.6s ease-out 0.4s forwards;
+  opacity: 0;
+}
+
+.animate-boot-delay-5 {
+  animation: bootSequence 0.6s ease-out 0.5s forwards;
+  opacity: 0;
+}
+
+.animate-scan-in {
+  animation: scanIn 0.8s ease-out forwards;
+}
+
+.animate-typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typewriter 2s steps(40) forwards;
+}
+
+.animate-cursor {
+  animation: cursorBlink 0.8s step-end infinite;
+}

@@ -1,0 +1,267 @@
+/**
+ * ConsoleHeader - Mission control header styling
+ */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-green);
+  gap: var(--space-lg);
+  min-height: 60px;
+}
+
+/* Left section: Logo/Title */
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+.asciiTitle {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  line-height: 1.1;
+  color: var(--terminal-green);
+  text-shadow: 0 0 10px var(--terminal-green-glow);
+  white-space: pre;
+  letter-spacing: 0;
+}
+
+.titleText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mainTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--terminal-green);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 10px var(--terminal-green-glow);
+  margin: 0;
+}
+
+.subtitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* Center section: Stats bar */
+.statsSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  flex: 1;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 100px;
+}
+
+.statLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.statValue {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--terminal-green);
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.statHighlight {
+  color: var(--terminal-green-bright);
+  text-shadow: 0 0 8px var(--terminal-green-glow);
+}
+
+.statWarning {
+  color: var(--status-warning);
+  text-shadow: 0 0 8px var(--status-warning-glow);
+}
+
+.statError {
+  color: var(--status-error);
+  text-shadow: 0 0 8px var(--status-offline-glow);
+}
+
+.statCogen {
+  color: var(--status-cogen);
+  text-shadow: 0 0 8px var(--status-cogen-glow);
+}
+
+.statDivider {
+  width: 1px;
+  height: 30px;
+  background: var(--border-green-dim);
+}
+
+/* Right section: Clock and status */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+.clock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.clockTime {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  color: var(--terminal-green);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 10px var(--terminal-green-glow);
+}
+
+.clockDate {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.clockLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* Connection status indicator */
+.connectionStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--border-green-dim);
+  background: rgba(0, 255, 65, 0.05);
+}
+
+.connectionStatus.connected {
+  border-color: var(--terminal-green);
+}
+
+.connectionStatus.disconnected {
+  border-color: var(--status-error);
+  background: rgba(255, 51, 102, 0.05);
+}
+
+.connectionDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--terminal-green);
+  box-shadow: 0 0 6px var(--terminal-green-glow);
+}
+
+.connectionStatus.disconnected .connectionDot {
+  background: var(--status-error);
+  box-shadow: 0 0 6px var(--status-offline-glow);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.connectionLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--terminal-green);
+}
+
+.connectionStatus.disconnected .connectionLabel {
+  color: var(--status-error);
+}
+
+/* CLI Demo Link */
+.demoLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--terminal-green);
+  background: rgba(0, 255, 100, 0.05);
+  border: 1px solid rgba(0, 255, 100, 0.2);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.demoLink:hover {
+  background: rgba(0, 255, 100, 0.1);
+  border-color: rgba(0, 255, 100, 0.4);
+  box-shadow: 0 0 8px rgba(0, 255, 100, 0.2);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .statsSection {
+    gap: var(--space-md);
+  }
+
+  .statItem {
+    min-width: 80px;
+  }
+
+  .asciiTitle {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .header {
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .statsSection {
+    order: 3;
+    width: 100%;
+    justify-content: space-around;
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border-green-dim);
+  }
+
+  .statDivider {
+    display: none;
+  }
+}

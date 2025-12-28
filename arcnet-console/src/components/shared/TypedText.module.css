@@ -1,0 +1,162 @@
+/**
+ * TypedText Component - Typewriter animation
+ */
+
+.container {
+  display: inline;
+  font-family: var(--font-mono);
+}
+
+.text {
+  display: inline;
+}
+
+/* Cursor styles */
+.cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  background: var(--terminal-green);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+.cursorHidden {
+  opacity: 0;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Cursor variants */
+.cursorBlock {
+  width: 0.6em;
+  background: var(--terminal-green);
+}
+
+.cursorLine {
+  width: 2px;
+  background: var(--terminal-green);
+}
+
+.cursorUnderscore {
+  width: 0.6em;
+  height: 2px;
+  background: var(--terminal-green);
+  vertical-align: baseline;
+}
+
+/* Text glow when typing */
+.glowing {
+  text-shadow: 0 0 10px var(--terminal-green-glow);
+}
+
+.glowing .cursor {
+  box-shadow: 0 0 10px var(--terminal-green-glow);
+}
+
+/* Color variants */
+.colorGreen {
+  color: var(--terminal-green);
+}
+
+.colorGreen .cursor {
+  background: var(--terminal-green);
+}
+
+.colorCyan {
+  color: var(--accent-cyan);
+}
+
+.colorCyan .cursor {
+  background: var(--accent-cyan);
+}
+
+.colorWarning {
+  color: var(--status-warning);
+}
+
+.colorWarning .cursor {
+  background: var(--status-warning);
+}
+
+.colorError {
+  color: var(--status-error);
+}
+
+.colorError .cursor {
+  background: var(--status-error);
+}
+
+.colorHpc {
+  color: var(--status-hpc);
+}
+
+.colorHpc .cursor {
+  background: var(--status-hpc);
+}
+
+.colorWhite {
+  color: var(--text-white);
+}
+
+.colorWhite .cursor {
+  background: var(--text-white);
+}
+
+/* Size variants */
+.sizeSm {
+  font-size: var(--text-sm);
+}
+
+.sizeSm .cursor {
+  height: 1em;
+  width: 0.5em;
+}
+
+.sizeMd {
+  font-size: var(--text-md);
+}
+
+.sizeLg {
+  font-size: var(--text-lg);
+}
+
+.sizeLg .cursor {
+  height: 1.2em;
+  width: 0.7em;
+}
+
+.sizeXl {
+  font-size: var(--text-xl);
+}
+
+.sizeXl .cursor {
+  height: 1.3em;
+  width: 0.8em;
+}
+
+/* Prefix styling (e.g., ">" or "$") */
+.prefix {
+  color: var(--text-secondary);
+  margin-right: var(--space-xs);
+}
+
+/* Completed state - no animation */
+.completed .cursor {
+  animation: none;
+  opacity: 0;
+}
+
+/* Show cursor only on hover */
+.hoverCursor .cursor {
+  opacity: 0;
+}
+
+.hoverCursor:hover .cursor {
+  opacity: 1;
+  animation: blink 1s step-end infinite;
+}

@@ -1,0 +1,224 @@
+/**
+ * NodeDetail - Selected node information styling
+ */
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+  min-height: 200px;
+}
+
+.emptyIcon {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  color: var(--text-dim);
+  margin-bottom: var(--space-sm);
+}
+
+.emptyTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-xs);
+}
+
+.emptyHint {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-dim);
+  max-width: 200px;
+}
+
+.emptyKeys {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+}
+
+.keyHint {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-dim);
+}
+
+.keyHint kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  margin-right: var(--space-xs);
+  background: var(--bg-input);
+  border: 1px solid var(--border-green-dim);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+/* Detail Content */
+.detailContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+/* Close Button */
+.closeButton {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.closeButton:hover {
+  color: var(--status-error);
+}
+
+/* Section */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Node Header */
+.nodeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.nodeName {
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  color: var(--terminal-green);
+  text-shadow: 0 0 8px var(--terminal-green-glow);
+}
+
+.nodeId {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-dim);
+  word-break: break-all;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: var(--border-green-dim);
+  margin: var(--space-xs) 0;
+}
+
+/* Row */
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.value {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.valueSmall {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.valueCode {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--accent-cyan);
+  letter-spacing: 0.05em;
+}
+
+.progressCell {
+  display: flex;
+  align-items: center;
+}
+
+/* Model List */
+.modelList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.modelTag {
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-green-dim);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--accent-cyan);
+}
+
+.noModels {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-green-dim);
+}
+
+.actionButton {
+  flex: 1;
+  padding: var(--space-xs) var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  background: var(--bg-input);
+  border: 1px solid var(--border-green-dim);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all var(--transition-fast);
+}
+
+.actionButton:hover {
+  color: var(--terminal-green);
+  border-color: var(--terminal-green);
+  text-shadow: 0 0 8px var(--terminal-green-glow);
+}

@@ -1,0 +1,267 @@
+/**
+ * StatusBadge Component - Colored status indicator
+ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Status dot */
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Size variants */
+.sizeSm {
+  font-size: var(--text-xs);
+}
+
+.sizeSm .dot {
+  width: 6px;
+  height: 6px;
+}
+
+.sizeMd {
+  font-size: var(--text-sm);
+}
+
+.sizeLg {
+  font-size: var(--text-md);
+}
+
+.sizeLg .dot {
+  width: 10px;
+  height: 10px;
+}
+
+/* Status: Online */
+.statusOnline .dot {
+  background: var(--terminal-green);
+  box-shadow: 0 0 8px var(--terminal-green-glow);
+}
+
+.statusOnline .label {
+  color: var(--terminal-green);
+}
+
+/* Status: Offline */
+.statusOffline .dot {
+  background: var(--status-offline);
+  box-shadow: 0 0 8px var(--status-offline-glow);
+}
+
+.statusOffline .label {
+  color: var(--status-offline);
+}
+
+/* Status: Busy */
+.statusBusy .dot {
+  background: var(--status-warning);
+  box-shadow: 0 0 8px var(--status-warning-glow);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.statusBusy .label {
+  color: var(--status-warning);
+}
+
+/* Status: Idle */
+.statusIdle .dot {
+  background: var(--text-muted);
+  box-shadow: 0 0 8px rgba(0, 85, 34, 0.4);
+}
+
+.statusIdle .label {
+  color: var(--text-muted);
+}
+
+/* Status: Stale */
+.statusStale .dot {
+  background: var(--text-secondary);
+  box-shadow: 0 0 8px rgba(0, 170, 42, 0.3);
+  animation: blink 2s step-end infinite;
+}
+
+.statusStale .label {
+  color: var(--text-secondary);
+}
+
+/* Status: Warning */
+.statusWarning .dot {
+  background: var(--status-warning);
+  box-shadow: 0 0 8px var(--status-warning-glow);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.statusWarning .label {
+  color: var(--status-warning);
+}
+
+/* Status: Error */
+.statusError .dot {
+  background: var(--status-error);
+  box-shadow: 0 0 8px var(--status-offline-glow);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.statusError .label {
+  color: var(--status-error);
+}
+
+/* Energy: Cogen */
+.statusCogen .dot {
+  background: var(--status-cogen);
+  box-shadow: 0 0 8px var(--status-cogen-glow);
+}
+
+.statusCogen .label {
+  color: var(--status-cogen);
+}
+
+/* Energy: Grid */
+.statusGrid .dot {
+  background: var(--status-grid);
+  box-shadow: 0 0 8px var(--status-grid-glow);
+}
+
+.statusGrid .label {
+  color: var(--status-grid);
+}
+
+/* Energy: Battery */
+.statusBattery .dot {
+  background: var(--status-battery);
+  box-shadow: 0 0 8px var(--status-battery-glow);
+}
+
+.statusBattery .label {
+  color: var(--status-battery);
+}
+
+/* HPC */
+.statusHpc .dot {
+  background: var(--status-hpc);
+  box-shadow: 0 0 8px var(--status-hpc-glow);
+}
+
+.statusHpc .label {
+  color: var(--status-hpc);
+}
+
+/* Cyan accent */
+.statusCyan .dot {
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan-glow);
+}
+
+.statusCyan .label {
+  color: var(--accent-cyan);
+}
+
+/* Pending/Active transfer states */
+.statusPending .dot {
+  background: var(--accent-cyan-dim);
+  box-shadow: 0 0 8px var(--accent-cyan-glow);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.statusPending .label {
+  color: var(--accent-cyan-dim);
+}
+
+.statusActive .dot {
+  background: var(--terminal-green);
+  box-shadow: 0 0 8px var(--terminal-green-glow);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.statusActive .label {
+  color: var(--terminal-green);
+}
+
+.statusCompleted .dot {
+  background: var(--terminal-green-dim);
+  box-shadow: 0 0 8px var(--terminal-green-glow);
+}
+
+.statusCompleted .label {
+  color: var(--terminal-green-dim);
+}
+
+.statusFailed .dot {
+  background: var(--status-error);
+  box-shadow: 0 0 8px var(--status-offline-glow);
+}
+
+.statusFailed .label {
+  color: var(--status-error);
+}
+
+/* Label styling */
+.label {
+  white-space: nowrap;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+
+/* Variant: Pill style */
+.variantPill {
+  background: rgba(0, 255, 65, 0.1);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 100px;
+  border: 1px solid var(--border-green-dim);
+}
+
+.variantPill.statusOffline,
+.variantPill.statusError,
+.variantPill.statusFailed {
+  background: rgba(255, 51, 102, 0.1);
+  border-color: rgba(255, 51, 102, 0.3);
+}
+
+.variantPill.statusWarning,
+.variantPill.statusBusy {
+  background: rgba(255, 170, 0, 0.1);
+  border-color: rgba(255, 170, 0, 0.3);
+}
+
+.variantPill.statusCogen {
+  background: rgba(68, 136, 255, 0.1);
+  border-color: rgba(68, 136, 255, 0.3);
+}
+
+.variantPill.statusHpc {
+  background: rgba(170, 68, 255, 0.1);
+  border-color: rgba(170, 68, 255, 0.3);
+}
+
+/* Variant: Minimal (dot only, no label) */
+.variantMinimal .label {
+  display: none;
+}

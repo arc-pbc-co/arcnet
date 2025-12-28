@@ -1,0 +1,207 @@
+/**
+ * Panel Component - Terminal-styled container
+ */
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-green);
+  box-shadow: var(--shadow-green);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: var(--shadow-inset);
+  pointer-events: none;
+}
+
+/* Size variants */
+.panelSm {
+  padding: var(--space-sm);
+}
+
+.panelMd {
+  padding: var(--space-md);
+}
+
+.panelLg {
+  padding: var(--space-lg);
+}
+
+/* With header */
+.panelWithHeader {
+  padding-top: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--border-green-dim);
+  background: rgba(0, 255, 65, 0.03);
+  margin: 0 calc(-1 * var(--space-md));
+  margin-bottom: var(--space-md);
+}
+
+.panelSm .header {
+  margin: 0 calc(-1 * var(--space-sm));
+  margin-bottom: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.panelLg .header {
+  margin: 0 calc(-1 * var(--space-lg));
+  margin-bottom: var(--space-lg);
+  padding: var(--space-sm) var(--space-lg);
+}
+
+.title {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 0;
+}
+
+.titleGlow {
+  text-shadow: 0 0 10px var(--terminal-green-glow);
+  color: var(--text-primary);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Corner decorations */
+.corners::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, var(--terminal-green) 8px, transparent 8px) 0 0,
+    linear-gradient(to bottom, var(--terminal-green) 8px, transparent 8px) 0 0,
+    linear-gradient(to left, var(--terminal-green) 8px, transparent 8px) 100% 0,
+    linear-gradient(to bottom, var(--terminal-green) 8px, transparent 8px) 100% 0,
+    linear-gradient(to right, var(--terminal-green) 8px, transparent 8px) 0 100%,
+    linear-gradient(to top, var(--terminal-green) 8px, transparent 8px) 0 100%,
+    linear-gradient(to left, var(--terminal-green) 8px, transparent 8px) 100% 100%,
+    linear-gradient(to top, var(--terminal-green) 8px, transparent 8px) 100% 100%;
+  background-repeat: no-repeat;
+  background-size: 2px 2px;
+  opacity: 0.5;
+}
+
+/* Glow effect on hover */
+.interactive {
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  cursor: pointer;
+}
+
+.interactive:hover {
+  border-color: var(--border-active);
+  box-shadow: var(--shadow-green-strong);
+}
+
+/* Variants */
+.variantDefault {
+  /* Default styling applied above */
+}
+
+.variantAccent {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+}
+
+.variantAccent .header {
+  background: rgba(0, 212, 255, 0.05);
+  border-color: rgba(0, 212, 255, 0.2);
+}
+
+.variantAccent .title {
+  color: var(--accent-cyan);
+}
+
+.variantWarning {
+  border-color: var(--status-warning);
+  box-shadow: 0 0 20px var(--status-warning-glow);
+}
+
+.variantWarning .header {
+  background: rgba(255, 170, 0, 0.05);
+  border-color: rgba(255, 170, 0, 0.2);
+}
+
+.variantWarning .title {
+  color: var(--status-warning);
+}
+
+.variantError {
+  border-color: var(--status-error);
+  box-shadow: 0 0 20px var(--status-offline-glow);
+}
+
+.variantError .header {
+  background: rgba(255, 51, 102, 0.05);
+  border-color: rgba(255, 51, 102, 0.2);
+}
+
+.variantError .title {
+  color: var(--status-error);
+}
+
+.variantHpc {
+  border-color: var(--status-hpc);
+  box-shadow: 0 0 20px var(--status-hpc-glow);
+}
+
+.variantHpc .header {
+  background: rgba(170, 68, 255, 0.05);
+  border-color: rgba(170, 68, 255, 0.2);
+}
+
+.variantHpc .title {
+  color: var(--status-hpc);
+}
+
+/* Content wrapper */
+.content {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Scrollbar styling for panel content */
+.content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: var(--bg-terminal-darker);
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: var(--terminal-green-dim);
+  border-radius: 3px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: var(--terminal-green);
+}

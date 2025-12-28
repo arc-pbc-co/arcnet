@@ -1,0 +1,22 @@
+#kaocha/v1
+{:tests [{:id :unit
+          :test-paths ["test"]
+          :ns-patterns ["^arcnet\\..*-test$"]}
+
+         {:id :integration
+          :test-paths ["test"]
+          :ns-patterns ["^arcnet\\.test\\.integration$"]
+          ;; Integration tests need more time for containers
+          :kaocha/timeout 120000}]
+
+ :plugins [:kaocha.plugin/profiling
+           :kaocha.plugin/print-invocations]
+
+ ;; Fail fast on first failure in CI
+ :kaocha/fail-fast? false
+
+ ;; Color output
+ :kaocha/color? true
+
+ ;; Reporter
+ :kaocha/reporter [kaocha.report/dots]}

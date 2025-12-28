@@ -1,0 +1,413 @@
+/**
+ * EventLog - Terminal-styled event list
+ */
+
+/* Main Container */
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-green);
+  box-shadow: var(--shadow-green);
+  padding: var(--space-sm);
+  min-height: 0;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border-green-dim);
+  margin-bottom: var(--space-sm);
+}
+
+.title {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* Header Actions */
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.eventCount {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.actionBtn {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.actionBtn:hover {
+  color: var(--terminal-green);
+}
+
+.actionBtn.paused {
+  color: var(--status-warning);
+}
+
+.actionBtn.active {
+  color: var(--terminal-green);
+}
+
+/* Event List Container */
+.eventList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+/* Empty State */
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Event Entry Container */
+.entryContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Event Entry */
+.entry {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding: 3px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color var(--transition-fast);
+}
+
+.entry.clickable {
+  cursor: pointer;
+}
+
+.entry.clickable:hover {
+  background-color: rgba(0, 255, 65, 0.05);
+}
+
+.timestamp {
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.type {
+  flex-shrink: 0;
+  min-width: 44px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.message {
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nodeId {
+  color: var(--text-dim);
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+}
+
+.expandIcon {
+  color: var(--text-muted);
+  margin-left: var(--space-xs);
+  font-size: var(--text-xs);
+  flex-shrink: 0;
+}
+
+/* Event Details */
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-xs) var(--space-md);
+  margin-left: calc(var(--space-md) * 3);
+  background: rgba(0, 255, 65, 0.03);
+  border-left: 2px solid var(--border-green-dim);
+  font-size: var(--text-xs);
+}
+
+.detailRow {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.detailKey {
+  color: var(--text-muted);
+  min-width: 100px;
+}
+
+.detailValue {
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
+/* Type Colors */
+.typeInference {
+  color: var(--terminal-green);
+}
+
+.typeInference .type {
+  color: var(--terminal-green);
+  text-shadow: 0 0 6px var(--terminal-green-glow);
+}
+
+.typeHpc {
+  color: var(--status-hpc);
+}
+
+.typeHpc .type {
+  color: var(--status-hpc);
+  text-shadow: 0 0 6px var(--status-hpc-glow);
+}
+
+.typeNodeOnline {
+  color: var(--terminal-green-dim);
+}
+
+.typeNodeOnline .type {
+  color: var(--terminal-green);
+}
+
+.typeNodeOffline {
+  color: var(--text-muted);
+}
+
+.typeNodeOffline .type {
+  color: var(--status-warning);
+}
+
+.typeWarning {
+  color: var(--status-warning);
+}
+
+.typeWarning .type {
+  color: var(--status-warning);
+  text-shadow: 0 0 6px var(--status-warning-glow);
+}
+
+.typeError {
+  color: var(--status-error);
+}
+
+.typeError .type {
+  color: var(--status-error);
+  text-shadow: 0 0 6px var(--status-offline-glow);
+}
+
+.typeSystem {
+  color: var(--accent-cyan);
+}
+
+.typeSystem .type {
+  color: var(--accent-cyan);
+  text-shadow: 0 0 6px var(--accent-cyan-glow);
+}
+
+/* Scroll Indicator */
+.scrollIndicator {
+  position: absolute;
+  bottom: var(--space-sm);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--bg-panel-solid);
+  border: 1px solid var(--accent-cyan);
+  box-shadow: 0 0 10px var(--accent-cyan-glow);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--accent-cyan);
+  z-index: 10;
+}
+
+.scrollIndicator button {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--accent-cyan);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.scrollIndicator button:hover {
+  color: var(--accent-cyan-bright);
+}
+
+/* Scrollbar styling */
+.eventList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.eventList::-webkit-scrollbar-track {
+  background: var(--bg-terminal-darker);
+}
+
+.eventList::-webkit-scrollbar-thumb {
+  background: var(--terminal-green-dim);
+  border-radius: 3px;
+}
+
+.eventList::-webkit-scrollbar-thumb:hover {
+  background: var(--terminal-green);
+}
+
+/* Filters Panel */
+.filtersPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  background: rgba(0, 20, 10, 0.5);
+  border-bottom: 1px solid var(--border-green-dim);
+  margin-bottom: var(--space-sm);
+}
+
+.filterSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.filterLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+  background: var(--bg-terminal);
+  border: 1px solid var(--border-green-dim);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.searchInput:focus {
+  border-color: var(--terminal-green);
+  box-shadow: 0 0 8px var(--terminal-green-glow);
+}
+
+.searchInput::placeholder {
+  color: var(--text-dim);
+}
+
+.filterButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.filterBtn {
+  padding: 2px var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  background: var(--bg-terminal);
+  border: 1px solid var(--border-green-dim);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+}
+
+.filterBtn:hover {
+  color: var(--text-primary);
+  border-color: var(--terminal-green-dim);
+}
+
+.filterBtn.active {
+  color: var(--terminal-green);
+  border-color: var(--terminal-green);
+  background: rgba(0, 255, 65, 0.1);
+  box-shadow: 0 0 6px var(--terminal-green-glow);
+}
+
+/* Severity-specific filter button colors */
+.filterBtn.severityInfo.active {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  background: rgba(0, 212, 255, 0.1);
+}
+
+.filterBtn.severitySuccess.active {
+  color: var(--terminal-green);
+  border-color: var(--terminal-green);
+  background: rgba(0, 255, 65, 0.1);
+}
+
+.filterBtn.severityWarn.active {
+  color: var(--status-warning);
+  border-color: var(--status-warning);
+  background: rgba(255, 193, 7, 0.1);
+}
+
+.filterBtn.severityError.active {
+  color: var(--status-error);
+  border-color: var(--status-error);
+  background: rgba(255, 51, 102, 0.1);
+}
+
+.clearFiltersBtn {
+  padding: var(--space-xs) var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--status-warning);
+  background: transparent;
+  border: 1px solid var(--status-warning);
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all var(--transition-fast);
+  align-self: flex-start;
+}
+
+.clearFiltersBtn:hover {
+  background: rgba(255, 193, 7, 0.1);
+  box-shadow: 0 0 8px var(--status-warning-glow);
+}

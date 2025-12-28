@@ -1,0 +1,105 @@
+/**
+ * AsciiProgress Component - Terminal-style progress bar
+ */
+
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.bar {
+  display: inline-block;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+}
+
+.percentage {
+  min-width: 3.5em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  color: var(--text-secondary);
+  margin-left: var(--space-xs);
+}
+
+/* Color variants based on value */
+.colorLow {
+  color: var(--status-error);
+  text-shadow: 0 0 8px var(--status-offline-glow);
+}
+
+.colorMedium {
+  color: var(--status-warning);
+  text-shadow: 0 0 8px var(--status-warning-glow);
+}
+
+.colorHigh {
+  color: var(--terminal-green);
+  text-shadow: 0 0 8px var(--terminal-green-glow);
+}
+
+/* Alternative color schemes */
+.colorCyan {
+  color: var(--accent-cyan);
+  text-shadow: 0 0 8px var(--accent-cyan-glow);
+}
+
+.colorHpc {
+  color: var(--status-hpc);
+  text-shadow: 0 0 8px var(--status-hpc-glow);
+}
+
+.colorCogen {
+  color: var(--status-cogen);
+  text-shadow: 0 0 8px var(--status-cogen-glow);
+}
+
+/* Size variants */
+.sizeSm {
+  font-size: var(--text-xs);
+}
+
+.sizeSm .percentage {
+  min-width: 3em;
+}
+
+.sizeMd {
+  font-size: var(--text-sm);
+}
+
+.sizeLg {
+  font-size: var(--text-md);
+}
+
+.sizeLg .percentage {
+  min-width: 4em;
+}
+
+/* Animated pulse for active progress */
+.animated {
+  animation: progressPulse 2s ease-in-out infinite;
+}
+
+@keyframes progressPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Filled character glow */
+.filled {
+  filter: drop-shadow(0 0 2px currentColor);
+}
+
+/* Empty character styling */
+.empty {
+  opacity: 0.3;
+}
