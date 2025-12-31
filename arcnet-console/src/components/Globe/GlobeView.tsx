@@ -463,21 +463,23 @@ export function GlobeView() {
         </div>
       )}
 
-      <DeckGL
-        views={GLOBE_VIEW}
-        viewState={viewState}
-        onViewStateChange={onViewStateChange}
-        controller={{
-          scrollZoom: { speed: 0.01, smooth: true },
-          dragRotate: true,
-          dragPan: true,
-          keyboard: true,
-          doubleClickZoom: true,
-          touchZoom: true,
-          touchRotate: true,
-        }}
-        layers={layers}
-      />
+      <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
+        <DeckGL
+          views={GLOBE_VIEW}
+          viewState={viewState}
+          onViewStateChange={onViewStateChange}
+          controller={{
+            scrollZoom: { speed: 0.01, smooth: true },
+            dragRotate: true,
+            dragPan: true,
+            keyboard: true,
+            doubleClickZoom: true,
+            touchZoom: true,
+            touchRotate: true,
+          }}
+          layers={layers}
+        />
+      </div>
 
       {/* Custom tooltip */}
       {tooltip && (
