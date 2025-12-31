@@ -13,6 +13,9 @@ export default defineConfig({
       '@deck.gl/geo-layers',
       '@deck.gl/react',
       'maplibre-gl',
+      'react',
+      'react-dom',
+      'zustand',
     ],
   },
 
@@ -24,23 +27,13 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // Manual chunk splitting for better caching
-        manualChunks: (id) => {
+        manualChunks: {
+          // Keep React in a single vendor chunk to avoid multiple instances
+          'vendor': ['react', 'react-dom', 'zustand', 'immer'],
           // deck.gl in its own chunk
-          if (id.includes('@deck.gl')) {
-            return 'deck-gl';
-          }
+          'deck-gl': ['@deck.gl/core', '@deck.gl/layers', '@deck.gl/geo-layers', '@deck.gl/react', '@deck.gl/extensions', '@deck.gl/mesh-layers'],
           // maplibre in its own chunk
-          if (id.includes('maplibre-gl')) {
-            return 'maplibre';
-          }
-          // Charts in separate chunk
-          if (id.includes('recharts') || id.includes('d3-')) {
-            return 'charts';
-          }
-          // Vendor chunk for React and state management
-          if (id.includes('react') || id.includes('zustand') || id.includes('immer')) {
-            return 'vendor';
-          }
+          'maplibre': ['maplibre-gl', 'react-map-gl'],
         },
       },
     },
@@ -76,6 +69,8 @@ export default defineConfig({
       '@types': '/src/types',
       '@layouts': '/src/layouts',
     },
+    // Ensure single React instance (fixes useLayoutEffect error with zustand)
+    dedupe: ['react', 'react-dom'],
   },
 
   // Define global constants
