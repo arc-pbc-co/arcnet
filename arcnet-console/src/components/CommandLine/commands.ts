@@ -7,7 +7,7 @@
 import type { ParsedCommand } from './CommandParser';
 import { validateFlag } from './CommandParser';
 import { useArcnetStore, VIEW_PRESETS, type ViewPresetKey } from '@/stores/arcnetStore';
-import type { Node, NodeStatus, EnergySource } from '@/types/arcnet';
+import type { NodeStatus, EnergySource } from '@/types/arcnet';
 
 export interface CommandOutput {
   lines: string[];
@@ -51,7 +51,7 @@ export function getCommandSuggestions(partial: string): string[] {
 /**
  * help - Show available commands
  */
-function handleHelp(cmd: ParsedCommand): CommandOutput {
+function handleHelp(_cmd: ParsedCommand): CommandOutput {
   const lines = [
     'Available Commands:',
     '',
@@ -81,7 +81,7 @@ function handleHelp(cmd: ParsedCommand): CommandOutput {
 /**
  * status - Show system status
  */
-function handleStatus(cmd: ParsedCommand): CommandOutput {
+function handleStatus(_cmd: ParsedCommand): CommandOutput {
   const state = useArcnetStore.getState();
   const { nodes, inferenceArcs, hpcTransfers, globalStats, isConnected } = state;
   
@@ -102,9 +102,9 @@ function handleStatus(cmd: ParsedCommand): CommandOutput {
   
   if (globalStats) {
     lines.push('', 'Global Stats:');
-    lines.push(`  Total Requests: ${globalStats.totalRequests}`);
-    lines.push(`  Completed: ${globalStats.completedRequests}`);
-    lines.push(`  Failed: ${globalStats.failedRequests}`);
+    lines.push(`  Inference RPS: ${globalStats.inferenceRps}`);
+    lines.push(`  P99 Latency: ${globalStats.p99LatencyMs}ms`);
+    lines.push(`  Pending HPC Jobs: ${globalStats.pendingHpcJobs}`);
   }
   
   return { lines };
@@ -329,7 +329,7 @@ function handleFly(cmd: ParsedCommand): CommandOutput {
 /**
  * clear - Clear command output
  */
-function handleClear(cmd: ParsedCommand): CommandOutput {
+function handleClear(_cmd: ParsedCommand): CommandOutput {
   return { lines: ['__CLEAR__'] };
 }
 
@@ -363,9 +363,9 @@ function handleStats(cmd: ParsedCommand): CommandOutput {
   const lines = ['Global Statistics:', ''];
 
   if (globalStats) {
-    lines.push(`Total Requests: ${globalStats.totalRequests}`);
-    lines.push(`Completed: ${globalStats.completedRequests}`);
-    lines.push(`Failed: ${globalStats.failedRequests}`);
+    lines.push(`Inference RPS: ${globalStats.inferenceRps}`);
+    lines.push(`P99 Latency: ${globalStats.p99LatencyMs}ms`);
+    lines.push(`Active HPC Transfers: ${globalStats.activeHpcTransfers}`);
     lines.push('');
   }
 
@@ -391,7 +391,7 @@ function handleEvents(cmd: ParsedCommand): CommandOutput {
   events.forEach(event => {
     const time = new Date(event.timestamp).toLocaleTimeString();
     const severity = event.severity || 'info';
-    const icon = severity === 'error' ? '❌' : severity === 'warning' ? '⚠️' : 'ℹ️';
+    const icon = severity === 'error' ? '❌' : severity === 'warn' ? '⚠️' : 'ℹ️';
     lines.push(`${icon} [${time}] ${event.message}`);
   });
 

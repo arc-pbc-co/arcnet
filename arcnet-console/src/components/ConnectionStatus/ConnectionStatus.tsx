@@ -8,7 +8,6 @@
  * - Mock Mode: Blue
  */
 
-import React from 'react';
 import styles from './ConnectionStatus.module.css';
 import type { ConnectionState } from '@/hooks';
 

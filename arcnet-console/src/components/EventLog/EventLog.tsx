@@ -115,7 +115,7 @@ function EventEntry({ event, isExpanded, onToggleExpand }: EventEntryProps) {
           <span className={styles.expandIcon}>{isExpanded ? '▼' : '▶'}</span>
         )}
       </div>
-      {isExpanded && hasDetails && (
+      {isExpanded && hasDetails && event.details && (
         <div className={styles.details}>
           {Object.entries(event.details).map(([key, value]) => (
             <div key={key} className={styles.detailRow}>

@@ -10,7 +10,10 @@
 
 import { useEffect, useRef } from 'react';
 import { useArcnetStore } from '@/stores/arcnetStore';
-import type { Node, InferenceArc, HpcTransfer, Event } from '@/types/arcnet';
+import type { Node, InferenceArc, HpcTransfer, Position } from '@/types/arcnet';
+
+// ORNL (Oak Ridge National Laboratory) coordinates
+const ORNL_POSITION: Position = [-84.2696, 35.9311];
 
 export interface UseMockTelemetryOptions {
   /** Enable mock telemetry */
@@ -121,19 +124,21 @@ function updateNodeTelemetry(node: Node): Node {
  */
 function generateMockInference(nodes: Node[]): InferenceArc | null {
   if (nodes.length === 0) return null;
-  
+
   const targetNode = nodes[Math.floor(Math.random() * nodes.length)];
   const model = MODELS[Math.floor(Math.random() * MODELS.length)];
-  
+
   return {
     id: `inf-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
     source: randomPosition(),
+    target: targetNode.position,
     targetNodeId: targetNode.id,
     modelId: model,
     priority: Math.random() > 0.8 ? 'critical' : Math.random() > 0.5 ? 'normal' : 'background',
     status: Math.random() > 0.9 ? 'failed' : Math.random() > 0.5 ? 'completed' : 'dispatched',
     latencyMs: 50 + Math.random() * 200,
     timestamp: new Date(),
+    progress: Math.random(),
   };
 }
 
@@ -142,15 +147,16 @@ function generateMockInference(nodes: Node[]): InferenceArc | null {
  */
 function generateMockHpcTransfer(nodes: Node[]): HpcTransfer | null {
   if (nodes.length === 0) return null;
-  
+
   const sourceNode = nodes[Math.floor(Math.random() * nodes.length)];
   const datasetSize = 10 + Math.random() * 500;
   const progress = Math.random();
-  
+
   return {
     id: `hpc-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
     sourceNodeId: sourceNode.id,
-    targetNodeId: 'ornl-frontier',
+    source: sourceNode.position,
+    target: ORNL_POSITION,
     datasetSizeGb: datasetSize,
     status: progress < 0.3 ? 'queued' : progress < 0.7 ? 'transferring' : progress < 0.9 ? 'running' : 'completed',
     progress,
@@ -162,7 +168,7 @@ function generateMockHpcTransfer(nodes: Node[]): HpcTransfer | null {
 export function useMockTelemetry(options: UseMockTelemetryOptions): void {
   const { enabled, interval = 5000, debug = false } = options;
   const store = useArcnetStore();
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const initializedRef = useRef(false);
 
   useEffect(() => {
@@ -216,7 +222,7 @@ export function useMockTelemetry(options: UseMockTelemetryOptions): void {
       if (Math.random() > 0.9) {
         const hpc = generateMockHpcTransfer(store.nodes);
         if (hpc) {
-          store.updateHpcTransfer(hpc);
+          store.addHpcTransfer(hpc);
           store.addEvent({
             id: `evt-${hpc.id}`,
             type: 'hpc',

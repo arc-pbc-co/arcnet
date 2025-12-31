@@ -17,7 +17,6 @@ import { useCallback, useEffect, useState, useRef, useMemo } from 'react';
 import DeckGL from '@deck.gl/react';
 import { _GlobeView as DeckGlobeView } from '@deck.gl/core';
 import { ScatterplotLayer, ArcLayer, SolidPolygonLayer, GeoJsonLayer } from '@deck.gl/layers';
-import { COORDINATE_SYSTEM } from '@deck.gl/core';
 import {
   useArcnetStore,
   VIEW_PRESETS,
@@ -51,11 +50,9 @@ const STATUS_OPACITY: Record<string, number> = {
   offline: 0.1,
 };
 
-// Arc colors (used in ArcLayer getSourceColor/getTargetColor)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const _INFERENCE_ARC_COLOR: [number, number, number, number] = [0, 212, 255, 200]; // Cyan
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const _HPC_ARC_COLOR: [number, number, number, number] = [170, 68, 255, 200]; // Purple
+// Arc colors - kept as reference for consistency
+// Inference: Cyan [0, 212, 255]
+// HPC: Purple [170, 68, 255]
 
 // Priority width multipliers
 const PRIORITY_WIDTH: Record<string, number> = {
@@ -321,13 +318,9 @@ export function GlobeView() {
           ],
         },
       ],
-      getPolygon: (d: any) => d.polygon,
+      getPolygon: (d: { polygon: number[][] }) => d.polygon,
       filled: true,
       getFillColor: [10, 30, 20, 255], // Darker green-tinted Earth
-      stroked: true,
-      getLineColor: [0, 150, 75, 80], // Brighter green border for visibility
-      getLineWidth: 2,
-      coordinateSystem: COORDINATE_SYSTEM.LNGLAT,
     }),
 
     // Country boundaries layer
@@ -484,7 +477,6 @@ export function GlobeView() {
           touchRotate: true,
         }}
         layers={layers}
-        style={{ background: '#000000' }}
       />
 
       {/* Custom tooltip */}
