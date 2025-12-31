@@ -4,7 +4,27 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>arcnet-console</title>
+    <title>ARCNet Console</title>
+    <!-- Preconnect to Google Fonts for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Load fonts via link tags (more reliable than CSS @import) -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- Critical styles to prevent black screen -->
+    <style>
+      /* Fallback styles that load immediately */
+      body {
+        background-color: #0a0f0a;
+        color: #00ff41;
+        font-family: 'JetBrains Mono', monospace;
+        margin: 0;
+        padding: 0;
+      }
+      #root {
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

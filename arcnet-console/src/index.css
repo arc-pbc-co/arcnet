@@ -8,10 +8,11 @@
  */
 
 /* =============================================================================
-   Google Fonts Import
+   Google Fonts - Loaded via index.html for reliability
    ============================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+/* Fonts loaded via <link> tags in index.html for better performance
+   and to avoid render-blocking @import in production */
 
 /* =============================================================================
    CSS Variables - Terminal Color System
