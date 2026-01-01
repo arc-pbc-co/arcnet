@@ -18,7 +18,7 @@
 
 .layout {
   display: grid;
-  grid-template-rows: auto 1fr auto auto;
+  grid-template-rows: auto 1fr minmax(40px, auto) minmax(44px, auto);
   grid-template-columns: 1fr 380px;
   grid-template-areas:
     "header header"
@@ -107,11 +107,6 @@
 .command {
   grid-area: command;
   border-top: 1px solid var(--border-green);
-  min-height: 44px; /* Minimum height when minimized (input bar only) */
-  max-height: 350px; /* Maximum height when expanded */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
 }
 
 /* Placeholder styling for development */

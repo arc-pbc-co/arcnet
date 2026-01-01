@@ -13,13 +13,13 @@
   font-size: 14px;
   color: rgb(0, 255, 100);
   overflow: hidden;
-  transition: all 200ms ease-out;
+  transition: height 200ms ease-out;
+  height: 44px; /* Collapsed: just input bar */
 }
 
 /* Expanded state - shows output history */
 .commandLine.expanded {
-  flex: 1;
-  min-height: 0;
+  height: 300px; /* Expanded: fixed height for output + input */
 }
 
 .toggleBtn {
