@@ -7,19 +7,24 @@
 .commandLine {
   display: flex;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.95);
   border: 1px solid rgba(0, 255, 100, 0.3);
   font-family: 'Courier New', 'Consolas', monospace;
   font-size: 14px;
   color: rgb(0, 255, 100);
   overflow: hidden;
-  transition: height 200ms ease-out;
-  height: 44px; /* Collapsed: just input bar */
+  position: relative;
 }
 
-/* Expanded state - shows output history */
+/* Expanded state - expands upward as overlay */
 .commandLine.expanded {
-  height: 300px; /* Expanded: fixed height for output + input */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 350px;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0, 255, 100, 0.2);
 }
 
 .toggleBtn {
