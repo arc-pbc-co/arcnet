@@ -117,6 +117,11 @@ export const CommandLine = forwardRef<CommandLineHandle>(function CommandLine(_p
     e.preventDefault();
     if (!input.trim()) return;
 
+    // Auto-expand when user submits a command
+    if (!isExpanded) {
+      setIsExpanded(true);
+    }
+
     handleCommand(input);
     addToCommandHistory(input);
     setInput('');

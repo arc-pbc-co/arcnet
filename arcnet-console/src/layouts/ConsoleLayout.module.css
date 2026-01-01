@@ -108,7 +108,7 @@
   grid-area: command;
   border-top: 1px solid var(--border-green);
   min-height: 40px; /* Minimum height when minimized */
-  max-height: 300px; /* Maximum height when expanded - matches event log */
+  max-height: 350px; /* Expanded height - fits ~10 lines of output */
   height: auto;
   display: flex;
   flex-direction: column;
