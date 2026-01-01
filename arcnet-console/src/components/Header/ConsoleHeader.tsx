@@ -15,14 +15,13 @@ import { ConnectionStatus } from '@/components/ConnectionStatus';
 import type { ConnectionState } from '@/hooks';
 import styles from './ConsoleHeader.module.css';
 
-// ASCII Art title - compact version for header
+// ASCII Art title - matches landing/login screens
 const ASCII_LOGO = `
- █████╗ ██████╗  ██████╗███╗   ██╗███████╗████████╗
-██╔══██╗██╔══██╗██╔════╝████╗  ██║██╔════╝╚══██╔══╝
-███████║██████╔╝██║     ██╔██╗ ██║█████╗     ██║
-██╔══██║██╔══██╗██║     ██║╚██╗██║██╔══╝     ██║
-██║  ██║██║  ██║╚██████╗██║ ╚████║███████╗   ██║
-╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═══╝╚══════╝   ╚═╝
+    _    ____   ____ _   _      _
+   / \\  |  _ \\ / ___| \\ | | ___| |_
+  / _ \\ | |_) | |   |  \\| |/ _ \\ __|
+ / ___ \\|  _ <| |___| |\\  |  __/ |_
+/_/   \\_\\_| \\_\\\\____|_| \\_|\\___|\\__|
 `.trim();
 
 /**
