@@ -95,9 +95,12 @@
 /* Event log area */
 .events {
   grid-area: events;
-  height: 180px;
+  min-height: 40px; /* Minimum height when minimized (header only) */
+  max-height: 250px; /* Maximum height when expanded */
+  height: auto;
   border-top: 1px solid var(--border-green);
-  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Command line area */
@@ -165,7 +168,7 @@
   }
 
   .events {
-    height: 150px;
+    max-height: 180px;
   }
 }
 

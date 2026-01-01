@@ -7,24 +7,27 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   height: 100%;
   background: var(--bg-panel);
   border: 1px solid var(--border-green);
   box-shadow: var(--shadow-green);
   padding: var(--space-sm);
   min-height: 0;
-  transition: height 200ms ease-out;
+  transition: all 200ms ease-out;
 }
 
 /* Minimized State */
 .container.minimized {
   height: auto;
+  min-height: auto;
+  max-height: none;
   flex: 0 0 auto;
 }
 
 .container.minimized .header {
   margin-bottom: 0;
-  padding-bottom: 0;
+  padding-bottom: var(--space-xs);
   border-bottom: none;
 }
 
