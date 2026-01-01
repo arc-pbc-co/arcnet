@@ -16,11 +16,12 @@ import { CommandLine, type CommandLineHandle } from '@/components/CommandLine';
 import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp';
 import { LoginScreen } from '@/components/LoginScreen';
 import { LoadingScreen } from '@/components/LoadingScreen';
+import { LandingPage } from '@/components/LandingPage';
 import { TerminalErrorBoundary } from '@/components/ErrorBoundary';
 import { useArcnetTelemetry, useMockTelemetry, useKeyboardShortcuts } from '@/hooks';
 
 /** Application authentication states */
-type AppState = 'login' | 'loading' | 'ready';
+type AppState = 'landing' | 'login' | 'loading' | 'ready';
 
 // Get WebSocket URL from environment variable
 const WS_URL = import.meta.env.VITE_WS_URL || null;
@@ -38,7 +39,7 @@ function App() {
   // Refs and state
   const commandLineRef = useRef<CommandLineHandle>(null);
   const [showHelp, setShowHelp] = useState(false);
-  const [appState, setAppState] = useState<AppState>('login');
+  const [appState, setAppState] = useState<AppState>('landing');
 
   // Keyboard shortcuts callbacks
   const handleFocusCommandLine = useCallback(() => {
@@ -47,6 +48,11 @@ function App() {
 
   const handleToggleHelp = useCallback(() => {
     setShowHelp((prev) => !prev);
+  }, []);
+
+  // Landing page handler - transition to login
+  const handleEnterConsole = useCallback(() => {
+    setAppState('login');
   }, []);
 
   // Login success handler - transition to loading screen
@@ -81,7 +87,16 @@ function App() {
   });
   console.log('[App] Mock telemetry enabled:', isMockMode);
 
-  // Show login screen if not authenticated
+  // Show landing page first
+  if (appState === 'landing') {
+    return (
+      <TerminalErrorBoundary>
+        <LandingPage onEnterConsole={handleEnterConsole} />
+      </TerminalErrorBoundary>
+    );
+  }
+
+  // Show login screen
   if (appState === 'login') {
     return (
       <TerminalErrorBoundary>
