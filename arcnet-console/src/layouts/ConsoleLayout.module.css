@@ -107,8 +107,8 @@
 .command {
   grid-area: command;
   border-top: 1px solid var(--border-green);
-  min-height: 40px; /* Minimum height when minimized (header only) */
-  max-height: 200px; /* Maximum height when expanded */
+  min-height: 40px; /* Minimum height when minimized */
+  max-height: 300px; /* Maximum height when expanded - matches event log */
   height: auto;
   display: flex;
   flex-direction: column;
