@@ -30,7 +30,7 @@ export const CommandLine = forwardRef<CommandLineHandle>(function CommandLine(_p
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showCursor, setShowCursor] = useState(true);
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
@@ -180,60 +180,57 @@ export const CommandLine = forwardRef<CommandLineHandle>(function CommandLine(_p
   };
 
   return (
-    <div className={`${styles.commandLine} ${isMinimized ? styles.minimized : ''}`}>
-      {/* Header with title and minimize/expand button */}
-      <div className={styles.header}>
-        <span className={styles.title}>COMMAND LINE</span>
-        <button
-          className={styles.toggleBtn}
-          onClick={() => setIsMinimized(!isMinimized)}
-          title={isMinimized ? 'Expand' : 'Minimize'}
-        >
-          {isMinimized ? '[+]' : '[−]'}
-        </button>
-      </div>
-
-      {!isMinimized && (
-        <>
-          <div ref={outputRef} className={styles.output}>
-            {output.map((line, i) => (
-              <div
-                key={i}
-                className={line.error ? styles.errorLine : styles.outputLine}
-              >
-                {line.text}
-              </div>
-            ))}
-          </div>
-
-          {suggestions.length > 0 && (
-            <div className={styles.suggestions}>
-              {suggestions.map((suggestion, i) => (
-                <span key={i} className={styles.suggestion}>
-                  {suggestion}
-                </span>
-              ))}
+    <div className={`${styles.commandLine} ${isExpanded ? styles.expanded : ''}`}>
+      {/* Output area - only shown when expanded */}
+      {isExpanded && (
+        <div ref={outputRef} className={styles.output}>
+          {output.map((line, i) => (
+            <div
+              key={i}
+              className={line.error ? styles.errorLine : styles.outputLine}
+            >
+              {line.text}
             </div>
-          )}
-
-          <form onSubmit={handleSubmit} className={styles.inputForm}>
-            <span className={styles.prompt}>arcnet&gt;</span>
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              className={styles.input}
-              spellCheck={false}
-              autoComplete="off"
-            />
-            <span className={styles.cursor} style={{ opacity: showCursor ? 1 : 0 }}>
-              █
-            </span>
-          </form>
-        </>
+          ))}
+        </div>
       )}
+
+      {/* Suggestions - only shown when expanded */}
+      {isExpanded && suggestions.length > 0 && (
+        <div className={styles.suggestions}>
+          {suggestions.map((suggestion, i) => (
+            <span key={i} className={styles.suggestion}>
+              {suggestion}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Input form with expand/collapse button - always visible */}
+      <form onSubmit={handleSubmit} className={styles.inputForm}>
+        <button
+          type="button"
+          className={styles.toggleBtn}
+          onClick={() => setIsExpanded(!isExpanded)}
+          title={isExpanded ? 'Minimize' : 'Expand'}
+        >
+          {isExpanded ? '[−]' : '[+]'}
+        </button>
+        <span className={styles.prompt}>arcnet&gt;</span>
+        <input
+          ref={inputRef}
+          type="text"
+          value={input}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          className={styles.input}
+          spellCheck={false}
+          autoComplete="off"
+        />
+        <span className={styles.cursor} style={{ opacity: showCursor ? 1 : 0 }}>
+          █
+        </span>
+      </form>
     </div>
   );
 });
