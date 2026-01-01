@@ -13,6 +13,19 @@
   box-shadow: var(--shadow-green);
   padding: var(--space-sm);
   min-height: 0;
+  transition: height 200ms ease-out;
+}
+
+/* Minimized State */
+.container.minimized {
+  height: auto;
+  flex: 0 0 auto;
+}
+
+.container.minimized .header {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 /* Header */

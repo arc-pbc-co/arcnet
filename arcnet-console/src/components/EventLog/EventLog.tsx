@@ -263,6 +263,7 @@ export function EventLog() {
   const [selectedSeverities, setSelectedSeverities] = useState<Set<EventSeverity>>(new Set());
   const [expandedEvents, setExpandedEvents] = useState<Set<string>>(new Set());
   const [showFilters, setShowFilters] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   // Connect to Zustand store
   const events = useArcnetStore((state) => state.events);
@@ -422,123 +423,139 @@ export function EventLog() {
   const hasActiveFilters = selectedTypes.size > 0 || selectedSeverities.size > 0 || searchQuery.trim() !== '';
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isMinimized ? styles.minimized : ''}`}>
       <div className={styles.header}>
         <span className={styles.title}>EVENT LOG</span>
         <div className={styles.headerActions}>
-          <span className={styles.eventCount}>
-            {filteredEvents.length}/{events.length}
-          </span>
+          {!isMinimized && (
+            <>
+              <span className={styles.eventCount}>
+                {filteredEvents.length}/{events.length}
+              </span>
+              <button
+                className={`${styles.actionBtn} ${showFilters ? styles.active : ''}`}
+                onClick={() => setShowFilters(!showFilters)}
+                title="Toggle filters"
+              >
+                [⚙]
+              </button>
+              <button
+                className={`${styles.actionBtn} ${isPaused ? styles.paused : ''}`}
+                onClick={handleTogglePause}
+                title={isPaused ? 'Resume' : 'Pause'}
+              >
+                {isPaused ? '[▶]' : '[⏸]'}
+              </button>
+              {!autoScroll && (
+                <button
+                  className={styles.actionBtn}
+                  onClick={handleScrollToBottom}
+                  title="Scroll to bottom"
+                >
+                  [↓]
+                </button>
+              )}
+            </>
+          )}
           <button
-            className={`${styles.actionBtn} ${showFilters ? styles.active : ''}`}
-            onClick={() => setShowFilters(!showFilters)}
-            title="Toggle filters"
+            className={styles.actionBtn}
+            onClick={() => setIsMinimized(!isMinimized)}
+            title={isMinimized ? 'Expand' : 'Minimize'}
           >
-            [⚙]
+            {isMinimized ? '[+]' : '[−]'}
           </button>
-          <button
-            className={`${styles.actionBtn} ${isPaused ? styles.paused : ''}`}
-            onClick={handleTogglePause}
-            title={isPaused ? 'Resume' : 'Pause'}
+        </div>
+      </div>
+
+      {/* Content only shown when not minimized */}
+      {!isMinimized && (
+        <>
+          {/* Filters Panel */}
+          {showFilters && (
+            <div className={styles.filtersPanel}>
+              {/* Search */}
+              <div className={styles.filterSection}>
+                <input
+                  type="text"
+                  className={styles.searchInput}
+                  placeholder="Search events..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              {/* Type Filters */}
+              <div className={styles.filterSection}>
+                <span className={styles.filterLabel}>Type:</span>
+                <div className={styles.filterButtons}>
+                  {(['inference', 'hpc', 'node_online', 'node_offline', 'system'] as EventType[]).map((type) => (
+                    <button
+                      key={type}
+                      className={`${styles.filterBtn} ${selectedTypes.has(type) ? styles.active : ''}`}
+                      onClick={() => toggleTypeFilter(type)}
+                    >
+                      {getTypeLabel(type)} ({eventStats.byType[type] || 0})
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Severity Filters */}
+              <div className={styles.filterSection}>
+                <span className={styles.filterLabel}>Severity:</span>
+                <div className={styles.filterButtons}>
+                  {(['info', 'success', 'warn', 'error'] as EventSeverity[]).map((severity) => (
+                    <button
+                      key={severity}
+                      className={`${styles.filterBtn} ${styles[`severity${severity.charAt(0).toUpperCase() + severity.slice(1)}`]} ${selectedSeverities.has(severity) ? styles.active : ''}`}
+                      onClick={() => toggleSeverityFilter(severity)}
+                    >
+                      {severity.toUpperCase()} ({eventStats.bySeverity[severity] || 0})
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Clear Filters */}
+              {hasActiveFilters && (
+                <button className={styles.clearFiltersBtn} onClick={clearFilters}>
+                  Clear Filters
+                </button>
+              )}
+            </div>
+          )}
+
+          <div
+            ref={scrollRef}
+            className={styles.eventList}
+            onScroll={handleScroll}
           >
-            {isPaused ? '[▶]' : '[⏸]'}
-          </button>
+            {filteredEvents.length === 0 ? (
+              <div className={styles.empty}>
+                <span>
+                  {hasActiveFilters ? 'No events match filters' : 'Waiting for events...'}
+                </span>
+              </div>
+            ) : (
+              filteredEvents.map((event) => (
+                <EventEntry
+                  key={event.id}
+                  event={event}
+                  isExpanded={expandedEvents.has(event.id)}
+                  onToggleExpand={() => toggleEventExpansion(event.id)}
+                />
+              ))
+            )}
+          </div>
+
+          {/* Auto-scroll indicator */}
           {!autoScroll && (
-            <button
-              className={styles.actionBtn}
-              onClick={handleScrollToBottom}
-              title="Scroll to bottom"
-            >
-              [↓]
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Filters Panel */}
-      {showFilters && (
-        <div className={styles.filtersPanel}>
-          {/* Search */}
-          <div className={styles.filterSection}>
-            <input
-              type="text"
-              className={styles.searchInput}
-              placeholder="Search events..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          {/* Type Filters */}
-          <div className={styles.filterSection}>
-            <span className={styles.filterLabel}>Type:</span>
-            <div className={styles.filterButtons}>
-              {(['inference', 'hpc', 'node_online', 'node_offline', 'system'] as EventType[]).map((type) => (
-                <button
-                  key={type}
-                  className={`${styles.filterBtn} ${selectedTypes.has(type) ? styles.active : ''}`}
-                  onClick={() => toggleTypeFilter(type)}
-                >
-                  {getTypeLabel(type)} ({eventStats.byType[type] || 0})
-                </button>
-              ))}
+            <div className={styles.scrollIndicator}>
+              <span>New events below</span>
+              <button onClick={handleScrollToBottom}>[↓]</button>
             </div>
-          </div>
-
-          {/* Severity Filters */}
-          <div className={styles.filterSection}>
-            <span className={styles.filterLabel}>Severity:</span>
-            <div className={styles.filterButtons}>
-              {(['info', 'success', 'warn', 'error'] as EventSeverity[]).map((severity) => (
-                <button
-                  key={severity}
-                  className={`${styles.filterBtn} ${styles[`severity${severity.charAt(0).toUpperCase() + severity.slice(1)}`]} ${selectedSeverities.has(severity) ? styles.active : ''}`}
-                  onClick={() => toggleSeverityFilter(severity)}
-                >
-                  {severity.toUpperCase()} ({eventStats.bySeverity[severity] || 0})
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Clear Filters */}
-          {hasActiveFilters && (
-            <button className={styles.clearFiltersBtn} onClick={clearFilters}>
-              Clear Filters
-            </button>
           )}
-        </div>
-      )}
-
-      <div
-        ref={scrollRef}
-        className={styles.eventList}
-        onScroll={handleScroll}
-      >
-        {filteredEvents.length === 0 ? (
-          <div className={styles.empty}>
-            <span>
-              {hasActiveFilters ? 'No events match filters' : 'Waiting for events...'}
-            </span>
-          </div>
-        ) : (
-          filteredEvents.map((event) => (
-            <EventEntry
-              key={event.id}
-              event={event}
-              isExpanded={expandedEvents.has(event.id)}
-              onToggleExpand={() => toggleEventExpansion(event.id)}
-            />
-          ))
-        )}
-      </div>
-
-      {/* Auto-scroll indicator */}
-      {!autoScroll && (
-        <div className={styles.scrollIndicator}>
-          <span>New events below</span>
-          <button onClick={handleScrollToBottom}>[↓]</button>
-        </div>
+        </>
       )}
     </div>
   );
