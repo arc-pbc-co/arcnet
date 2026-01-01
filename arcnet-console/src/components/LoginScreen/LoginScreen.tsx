@@ -20,7 +20,7 @@ const ASCII_LOGO = `
 // Valid credentials (in production, this would be server-side)
 const VALID_CREDENTIALS = {
   username: 'admin',
-  password: 'admin',
+  password: 'wW2Ry7O&kz7^RGhc',
 };
 
 export interface LoginScreenProps {
