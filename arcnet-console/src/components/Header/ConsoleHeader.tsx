@@ -16,13 +16,11 @@ import type { ConnectionState } from '@/hooks';
 import styles from './ConsoleHeader.module.css';
 
 // ASCII Art title - matches landing/login screens
-const ASCII_LOGO = `
-    _    ____   ____ _   _      _
+const ASCII_LOGO = `    _    ____   ____ _   _      _
    / \\  |  _ \\ / ___| \\ | | ___| |_
   / _ \\ | |_) | |   |  \\| |/ _ \\ __|
  / ___ \\|  _ <| |___| |\\  |  __/ |_
-/_/   \\_\\_| \\_\\\\____|_| \\_|\\___|\\__|
-`.trim();
+/_/   \\_\\_| \\_\\\\____|_| \\_|\\___|\\__|`;
 
 /**
  * Format number with K/M suffix
