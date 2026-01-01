@@ -7,8 +7,6 @@
 .commandLine {
   display: flex;
   flex-direction: column;
-  height: auto;
-  min-height: 0;
   background: rgba(0, 0, 0, 0.85);
   border: 1px solid rgba(0, 255, 100, 0.3);
   font-family: 'Courier New', 'Consolas', monospace;
@@ -20,8 +18,8 @@
 
 /* Expanded state - shows output history */
 .commandLine.expanded {
-  height: 100%;
-  flex: 1 1 auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .toggleBtn {
@@ -114,8 +112,12 @@
   display: flex;
   align-items: center;
   padding: 12px;
-  border-top: 1px solid rgba(0, 255, 100, 0.3);
   background: rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.commandLine.expanded .inputForm {
+  border-top: 1px solid rgba(0, 255, 100, 0.3);
 }
 
 .prompt {

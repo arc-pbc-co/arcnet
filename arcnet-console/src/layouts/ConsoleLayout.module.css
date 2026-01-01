@@ -107,11 +107,11 @@
 .command {
   grid-area: command;
   border-top: 1px solid var(--border-green);
-  min-height: 40px; /* Minimum height when minimized */
-  max-height: 350px; /* Expanded height - fits ~10 lines of output */
-  height: auto;
+  min-height: 44px; /* Minimum height when minimized (input bar only) */
+  max-height: 350px; /* Maximum height when expanded */
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 /* Placeholder styling for development */
