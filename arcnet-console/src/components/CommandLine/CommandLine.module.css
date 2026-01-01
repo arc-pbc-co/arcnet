@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0; /* Allow shrinking in flex container */
   background: rgba(0, 0, 0, 0.85);
   border: 1px solid rgba(0, 255, 100, 0.3);
   font-family: 'Courier New', 'Consolas', monospace;
@@ -17,7 +18,8 @@
 }
 
 .output {
-  flex: 1;
+  flex: 1 1 0; /* Grow, shrink, and use 0 as basis for proper flex behavior */
+  min-height: 0; /* Allow shrinking */
   overflow-y: auto;
   padding: 12px;
   line-height: 1.5;
